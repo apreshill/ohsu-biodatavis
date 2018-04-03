@@ -17,7 +17,7 @@ output:
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, 
   comment = NA, dpi = 300, echo = FALSE,
-  fig.align = "center", out.width = "80%")
+  fig.align = "center", out.width = "80%", cache = TRUE)
 library(tidyverse)
 ```
 
@@ -25,6 +25,11 @@ class: center, middle, inverse
 ## About me
 
 ![](images/beatles-tidy.gif)
+
+---
+class: center, middle
+
+![](images/aim-here.png)
 
 ---
 class: center, bottom, inverse
@@ -51,7 +56,11 @@ background-size: cover
 
 - 😳 I actually like the dots! And I return to this later.
 
- 
+---
+class: center, middle
+
+![](images/aim-here-v1.png)
+
 ---
 class: center, inverse, middle
 
@@ -98,6 +107,11 @@ class: center, middle, inverse
 ![](images/beatles-face-palm.gif)
 
 ---
+class: center, middle
+
+![](images/aim-here-v2.png)
+
+---
 class: center, bottom, inverse
 
 # `v3 <- ggplot()`
@@ -129,7 +143,7 @@ class: center, inverse, middle
 
 --
 
-## I can make up data!
+## I can use `ggplot2`!
 
 ---
 
@@ -137,9 +151,9 @@ class: center, inverse, middle
 ```{r tibbleset, echo = TRUE}
 set.seed(1000)
 asdpop <- tibble::tibble(
-  time1 = sample(1:101, 101, replace = F), 
+  time1 = sample(1:100, 100, replace = F), 
   time2 = time1) %>% 
-  tidyr::gather(time, y_position, time1:time2, factor_key = TRUE)  
+  tidyr::gather(x, y, time1:time2, factor_key = TRUE)  
 asdpop
 ```
 
@@ -148,9 +162,9 @@ asdpop
 ```{r tibblefactor, echo = TRUE}
 asdpop <- asdpop %>% 
   mutate(services = as.factor(case_when(
-    time == "time1" & y_position <= 30 ~ 1, 
-    time == "time1" & y_position > 30 ~ 0, 
-    time == "time2" & y_position <= 60 ~ 1, 
+    x == "time1" & y <= 30 ~ 1, 
+    x == "time1" & y > 30 ~ 0, 
+    x == "time2" & y <= 60 ~ 1, 
     TRUE ~ 0
     )))
 asdpop
@@ -160,7 +174,7 @@ asdpop
 class: center
 
 ```{r bar1}
-bar1 <- ggplot(asdpop, aes(x = time, fill = services)) 
+bar1 <- ggplot(asdpop, aes(x, fill = services)) 
 bar1 <- bar1 + geom_bar(width = .6)
 bar1
 ```
@@ -216,7 +230,7 @@ class: center
 
 ```{r bar5}
 # add the top horizontal line for population prevalence
-bar5 <- bar4 + geom_segment(aes(x = .6, xend = 2.45, y = 101, yend = 101), 
+bar5 <- bar4 + geom_segment(aes(x = .6, xend = 2.45, y = 100, yend = 100), 
                             lty = 3, lwd = .3, colour = "black")
 bar5
 ```
@@ -262,19 +276,19 @@ bar8
 ```
 
 ---
+class: center, middle
+
+![](images/aim-here-v3.png)
+
+---
 class: center, bottom, inverse
 
+# `rep("better", 40)`
 
-## `r rep("better", 6*2)`
 --
 
-## `r rep("better", 6*2)`
---
+## `r rep("better", 40)`...
 
-## `r rep("better", 6*2)`
---
-
-## `r rep("better", 5)`... 
 
 ---
 class: center, middle, inverse
@@ -289,8 +303,8 @@ class: center
 
 ```{r dot1}
 set.seed(1981)
-dot <- ggplot(asdpop, aes(x = time))
-dot <- dot + geom_jitter(aes(y = y_position, colour = services), 
+dot <- ggplot(asdpop, aes(x))
+dot <- dot + geom_jitter(aes(y = y, colour = services), 
                              position = position_jitter(width = .25, 
                                                         height = 0), 
                              alpha = .75, size = 2) 
@@ -309,9 +323,9 @@ dotseg <- dot + scale_colour_manual(values = ff,
                                       labels = c("Not accessing \nservices",
                                                  "Accessing \nservices")) 
 dotseg <- dotseg + annotate("text", 
-                        x = 1.2, y = 103.5, size = 4, hjust = 0, 
+                        x = 1.2, y = 102, size = 4, hjust = 0, 
                         label = "True ASD Prevalence", family = "Lato")
-dotseg <- dotseg + geom_segment(aes(x = .6, xend = 2.4, y = 101, yend = 101), 
+dotseg <- dotseg + geom_segment(aes(x = .6, xend = 2.4, y = 100, yend = 100), 
                               lty = 3, lwd = .5, colour = "black") 
 dotseg <- dotseg + geom_segment(aes(x = .6, xend = 1.2, y = 30, yend = 30), 
                               lty = 3, lwd = .5, colour = ff[2]) 
@@ -328,9 +342,9 @@ dotseg
 class: center
 
 ```{r dot3}
-dotcol <- ggplot(asdpop, aes(x = time))
+dotcol <- ggplot(asdpop, aes(x))
 dotcol <- dotcol + geom_bar(fill = "white", width = .6)
-dotcol <- dotcol + geom_jitter(aes(y = y_position, colour = services), 
+dotcol <- dotcol + geom_jitter(aes(y = y, colour = services), 
                              position = position_jitter(width = .25, 
                                                         height = 0), 
                              alpha = .75, size = 2) 
@@ -342,18 +356,19 @@ dotcol <- dotcol + scale_colour_manual(values = ff,
                                                  "Accessing \nservices")) 
 dotcol <- dotcol + guides(colour = guide_legend(keyheight = 1.5))
 dotcol <- dotcol + annotate("text", 
-                        x = 1.2, y = 103.5, size = 4, hjust = 0, 
+                        x = 1.2, y = 102, size = 4, hjust = 0, 
                         label = "True ASD Prevalence", family = "Lato")
-dotcol <- dotcol + geom_segment(aes(x = .6, xend = 2.4, y = 101, yend = 101), 
+dotcol <- dotcol + geom_segment(aes(x = .6, xend = 2.4, y = 100, yend = 100), 
                               lty = 3, lwd = .5, colour = "black") 
-dotcol <- dotcol + geom_segment(aes(x = .6, xend = 1.2, y = 30, yend = 30), 
+dotcol <- dotcol + geom_segment(aes(x = .6, xend = 1.3, y = 30, yend = 30), 
                               lty = 3, lwd = .5, colour = ff[2]) 
-dotcol <- dotcol + geom_segment(aes(x = 1.2, xend = 1.7, y = 30, yend = 60), 
+dotcol <- dotcol + geom_segment(aes(x = 1.3, xend = 1.7, y = 30, yend = 60), 
                               lty = 3, lwd = .5, colour = ff[2]) 
 dotcol <- dotcol + geom_segment(aes(x = 1.7, xend = 2.4, y = 60, yend = 60), 
                               lty = 3, lwd = .5, colour = ff[2])
 dotcol <- dotcol + theme(axis.ticks = element_blank()) 
 dotcol <- dotcol + theme(legend.key=element_blank()) 
+dotcol <- dotcol + theme(text = element_text(family = "Lato"))
 dotcol
 ```
 
@@ -362,7 +377,7 @@ dotcol
 class: center
 
 ```{r dot4}
-dotbw <- ggplot(asdpop, aes(x = time, y = y_position))
+dotbw <- ggplot(asdpop, aes(x, y))
 dotbw <- dotbw + geom_jitter(aes(colour = services), 
                              position = position_jitter(width = .25, 
                                                         height = 0), 
@@ -388,13 +403,14 @@ dotbw
 class: center
 
 ```{r dot5}
-dotleg <- ggplot(asdpop, aes(x = time, y = y_position))
+dotleg <- ggplot(asdpop, aes(x, y))
 dotleg <- dotleg + geom_jitter(aes(colour = services), 
                              position = position_jitter(width = .25, 
                                                         height = 0), 
                              alpha = .75, size = 2) 
 dotleg <- dotleg + scale_x_discrete(name = "", labels = c("Time 1", "Time 2"))
-dotleg <- dotleg + scale_y_continuous(name = "ASD Cases per 10,000") 
+dotleg <- dotleg + scale_y_continuous(name = "ASD Cases per 10,000",
+                                      breaks = seq(0, 100, by = 20)) 
 dotleg <- dotleg + theme_bw(base_family = "Lato") 
 dotleg <- dotleg + theme(axis.ticks = element_blank()) 
 dotleg <- dotleg + theme(panel.border = element_blank()) 
@@ -423,11 +439,11 @@ class: center
 
 ```{r dot6}
 # lines
-dotline <- dotleg + geom_segment(aes(x = .6, xend = 2.4, y = 102, yend = 102), 
+dotline <- dotleg + geom_segment(aes(x = .6, xend = 2.4, y = 100, yend = 100), 
                               lty = 3, lwd = .5, colour = "black") 
-dotline <- dotline + geom_segment(aes(x = .6, xend = 1.2, y = 30, yend = 30), 
+dotline <- dotline + geom_segment(aes(x = .6, xend = 1.3, y = 30, yend = 30), 
                               lty = 3, lwd = .5, colour = ff[2]) 
-dotline <- dotline + geom_segment(aes(x = 1.2, xend = 1.7, y = 30, yend = 60), 
+dotline <- dotline + geom_segment(aes(x = 1.3, xend = 1.7, y = 30, yend = 60), 
                               lty = 3, lwd = .5, colour = ff[2]) 
 dotline <- dotline + geom_segment(aes(x = 1.7, xend = 2.4, y = 60, yend = 60), 
                               lty = 3, lwd = .5, colour = ff[2])

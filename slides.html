@@ -28,6 +28,11 @@ class: center, middle, inverse
 ![](images/beatles-tidy.gif)
 
 ---
+class: center, middle
+
+![](images/aim-here.png)
+
+---
 class: center, bottom, inverse
 
 # `v1.ppt`
@@ -52,7 +57,11 @@ background-size: cover
 
 - 😳 I actually like the dots! And I return to this later.
 
- 
+---
+class: center, middle
+
+![](images/aim-here-v1.png)
+
 ---
 class: center, inverse, middle
 
@@ -99,6 +108,11 @@ class: center, middle, inverse
 ![](images/beatles-face-palm.gif)
 
 ---
+class: center, middle
+
+![](images/aim-here-v2.png)
+
+---
 class: center, bottom, inverse
 
 # `v3 &lt;- ggplot()`
@@ -130,7 +144,7 @@ class: center, inverse, middle
 
 --
 
-## I can make up data!
+## I can use `ggplot2`!
 
 ---
 
@@ -139,27 +153,27 @@ class: center, inverse, middle
 ```r
 set.seed(1000)
 asdpop &lt;- tibble::tibble(
-  time1 = sample(1:101, 101, replace = F), 
+  time1 = sample(1:100, 100, replace = F), 
   time2 = time1) %&gt;% 
-  tidyr::gather(time, y_position, time1:time2, factor_key = TRUE)  
+  tidyr::gather(x, y, time1:time2, factor_key = TRUE)  
 asdpop
 ```
 
 ```
-# A tibble: 202 x 2
-   time  y_position
-   &lt;fct&gt;      &lt;int&gt;
- 1 time1         34
- 2 time1         76
- 3 time1         12
- 4 time1         68
- 5 time1         51
- 6 time1          7
- 7 time1         71
- 8 time1         55
- 9 time1         21
-10 time1         24
-# ... with 192 more rows
+# A tibble: 200 x 2
+   x         y
+   &lt;fct&gt; &lt;int&gt;
+ 1 time1    33
+ 2 time1    76
+ 3 time1    12
+ 4 time1    68
+ 5 time1    50
+ 6 time1     7
+ 7 time1    70
+ 8 time1    55
+ 9 time1    20
+10 time1    24
+# ... with 190 more rows
 ```
 
 ---
@@ -168,29 +182,29 @@ asdpop
 ```r
 asdpop &lt;- asdpop %&gt;% 
   mutate(services = as.factor(case_when(
-    time == "time1" &amp; y_position &lt;= 30 ~ 1, 
-    time == "time1" &amp; y_position &gt; 30 ~ 0, 
-    time == "time2" &amp; y_position &lt;= 60 ~ 1, 
+    x == "time1" &amp; y &lt;= 30 ~ 1, 
+    x == "time1" &amp; y &gt; 30 ~ 0, 
+    x == "time2" &amp; y &lt;= 60 ~ 1, 
     TRUE ~ 0
     )))
 asdpop
 ```
 
 ```
-# A tibble: 202 x 3
-   time  y_position services
-   &lt;fct&gt;      &lt;int&gt; &lt;fct&gt;   
- 1 time1         34 0       
- 2 time1         76 0       
- 3 time1         12 1       
- 4 time1         68 0       
- 5 time1         51 0       
- 6 time1          7 1       
- 7 time1         71 0       
- 8 time1         55 0       
- 9 time1         21 1       
-10 time1         24 1       
-# ... with 192 more rows
+# A tibble: 200 x 3
+   x         y services
+   &lt;fct&gt; &lt;int&gt; &lt;fct&gt;   
+ 1 time1    33 0       
+ 2 time1    76 0       
+ 3 time1    12 1       
+ 4 time1    68 0       
+ 5 time1    50 0       
+ 6 time1     7 1       
+ 7 time1    70 0       
+ 8 time1    55 0       
+ 9 time1    20 1       
+10 time1    24 1       
+# ... with 190 more rows
 ```
 
 ---
@@ -242,19 +256,19 @@ class: center
 &lt;img src="slides_files/figure-html/bar8-1.png" width="80%" style="display: block; margin: auto;" /&gt;
 
 ---
+class: center, middle
+
+![](images/aim-here-v3.png)
+
+---
 class: center, bottom, inverse
 
+# `rep("better", 40)`
 
-## better, better, better, better, better, better, better, better, better, better, better, better
 --
 
-## better, better, better, better, better, better, better, better, better, better, better, better
---
+## better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better, better...
 
-## better, better, better, better, better, better, better, better, better, better, better, better
---
-
-## better, better, better, better, better... 
 
 ---
 class: center, middle, inverse
